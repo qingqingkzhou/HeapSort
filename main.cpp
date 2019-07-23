@@ -2,7 +2,16 @@
 
 /*==================================================
 1. Create a gm::Heap class
-2. Including following public member functions
+   - a container holding all the elements in the heap
+   - able to initialize the size of the container
+
+2. Create following public member functions
+    void Print()
+        - Print all the elements in the heap
+
+    void Generate()
+        - Randomly generate all the elements in the heap
+
     void SortInHouse()
         - Implement heap sort mechanism
 
@@ -10,29 +19,26 @@
         - use std::heap_sort
         (you may use any std sort for comparision)
 
-    void TestSort(const size_t retries)
-        - Compare different sort as well as sort
-          in std library
-        - Run sort on a fixed and same size of array
+    void TestSort(const size_t n_trials)
+        - Compare the in-house heap sort and std heap sort
+        - The same size of array will be used for both in-house and std sort
+        - Elements values can be different
+        - Run sort() for n_trials time and calculate the average time
         - Display the average time spent on sort()
 
-    void Print()
-        - Print the elements in an array
+3. In main()
+    - Create a 20 elements heap and verify the correctness of sort()
+    - Create a 10000 elements heap and test sort performance
 
-    void Resize(const size_t size)
-        - Resize the array
-
-    void Generate()
-        - use rand() to generate values for array
-
-3. Having a Macro PRINT_ENABLE to turn on and off print
 4. Build your project in Debug and Release and analyze
    and explain the performance difference
+
 5. Is there a way to Merge SortInHouse and SortUseStd
-   in one unified interface for the user to use (template)
+   into one unified interface for the user to use?
+
 ==================================================== */
 
-//#define PRINT_ENABLE
+#define PRINT_ENABLE
 
 // header files
 #include <iostream>
@@ -58,22 +64,30 @@ void main()
 {
     std::cout<< "Heap Sort - Qingqing Zhou\n\n";
 
-    gm::Heap my_heap{ 10000 };
+    gm::Heap my_heap{ 20 };
 
-    PRINT("Heap Sort using InHouse implementation\n");
+    PRINT("1. Heap Sort using InHouse implementation\n");
     my_heap.Generate();
+    PRINT("\nBefore:\n");
     PRINT(my_heap);
 
     my_heap.Sort<gm::InHouse>();
+    PRINT("After:\n");
     PRINT(my_heap);
 
-    PRINT("Heap Sort using std::sort_heap implementation\n");
+    PRINT("2. Heap Sort using std::sort_heap implementation\n");
+    PRINT("\nBefore:\n");
     my_heap.Generate();
     PRINT(my_heap);
 
     my_heap.Sort<gm::StdSort>();
+    PRINT("After:\n");
     PRINT(my_heap);
 
-    std::cout << "Performance Test\n";
-    my_heap.TestSort(10);
+    std::cout << "\n3. Performance Test\n";
+    my_heap.Resize(10000);
+    std::cout << "\n--- STD Heap Sort ---\n";
+    my_heap.TestSort<gm::StdSort>(10);
+    std::cout << "--- InHouse Heap Sort ---\n";
+    my_heap.TestSort<gm::InHouse>(10);
 }
