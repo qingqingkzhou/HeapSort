@@ -7,24 +7,24 @@
 
 namespace gm
 {
-    Heap::Heap(size_t size) :
+    Heap::Heap(const size_t size) :
         m_container(size)
     {
     }
 
-    void Heap::Resize(const size_t size)
-    {
-        m_container.resize(size);
-    }
-
     void Heap::Print() const
     {
-        std::cout << "Values in the container: \n";
+        std::cout << "Container["<< m_container.size() <<"]: \n";
         for (auto v : m_container)
         {
             std::cout << v << " ";
         }
         std::cout << "\n\n";
+    }
+
+    void Heap::Resize(const size_t size)
+    {
+        m_container.resize(size);
     }
 
     void Heap::Generate()
@@ -60,6 +60,7 @@ namespace gm
         }
     }
 
+
     template<>
     void Heap::Sort<InHouse>()
     {
@@ -88,36 +89,6 @@ namespace gm
         std::sort_heap(m_container.begin(), m_container.end());
     }
 
-    void Heap::TestSort(size_t retries)
-    {
-        int count{ 2 };
-        while ( (count--) > 0)
-        {
-            std::cout << (count ? "Time taken by InHouse\n" :
-                                 "Time taken by StdSort\n");
-
-            long long sum{ 0 };
-            for (int i = 0; i < retries; i++)
-            {
-                // Randomly generate values in the vector
-                Generate();
-
-                // Find the duration for Sort()
-                auto duration{ count ?
-                    TimedSort([this] { this->Sort<InHouse>(); }) :
-                    TimedSort([this] { this->Sort<StdSort>(); }) };
-
-                std::cout << "Time taken [" << i << "]: "
-                          << duration << " microseconds\n";
-
-                sum += duration;
-            }
-            // Caldulate the average performance
-            std::cout << "Time taken [Average]: " <<
-                sum / retries << " microseconds\n\n";
-        }
-    }
-
     long long Heap::TimedSort(FuncType func)
     {
         using namespace std::chrono;
@@ -135,6 +106,8 @@ namespace gm
         // get durarion. To cast it to proper unit
         // use duration cast method
         auto duration = duration_cast<microseconds>(stop - start);
+
+        std::cout << "Time taken: " << duration.count() << " microseconds\n";
 
         return duration.count();
     }
