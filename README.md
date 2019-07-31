@@ -38,3 +38,10 @@ Implementation using C++ for Heap Sort. Based on the lecture from MIT Algorithm 
 
 
 ### 5. Is there a way to Merge SortInHouse and SortUseStd into one unified interface for the user to use?
+
+### Solution:
+ - Use templated member function to implement Sort() for InHouse and StdSort `Heap-NoClassTemplate`
+ - VC++ and g++ have different requirement and tolerance on the *explicit specilization in non-namespace scop* of a templated member function in a templated class
+ - As an experiment, there are two implementation to show the workaround on g++ `Heap-ClassTemplate-g++`, `Heap-ClassTemplate-VC++`
+ - The suggested implementation <a href="https://stackoverflow.com/questions/3052579/explicit-specialization-in-non-namespace-scope">here</a> also works.
+ 
