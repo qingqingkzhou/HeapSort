@@ -42,7 +42,7 @@
 
 // header files
 #include <iostream>
-#include "Heap.h"
+#include "Heap.hpp"
 
 #ifdef PRINT_ENABLE
     #define PRINT Print
@@ -50,7 +50,7 @@
     #define PRINT
 #endif
 
-void Print(const gm::Heap& my_heap)
+void Print(const gm::Heap<int>& my_heap)
 {
     my_heap.Print();
 }
@@ -60,11 +60,13 @@ void Print(const std::string& text)
     std::cout << text.c_str();
 }
 
-void main()
+int main()
 {
     std::cout<< "Heap Sort - Qingqing Zhou\n\n";
 
-    gm::Heap my_heap{ 20 };
+    gm::Heap<int> my_heap{ 20 };
+
+    my_heap.Sort<gm::InHouse>();
 
     PRINT("1. Heap Sort using InHouse implementation\n");
     my_heap.Generate();
@@ -90,4 +92,6 @@ void main()
     my_heap.TestSort<gm::StdSort>(10);
     std::cout << "--- InHouse Heap Sort ---\n";
     my_heap.TestSort<gm::InHouse>(10);
+	
+	return 0;
 }
